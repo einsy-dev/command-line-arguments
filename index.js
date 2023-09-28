@@ -1,32 +1,21 @@
 #!/usr/bin/env node
 
-const { year, y, month, m, date, d, _ } = require('yargs').argv;
-const moment = require('moment');
+const prompt = require('prompt-sync')();
 
-let result = new Date().toISOString();
+const number = Math.floor(Math.random() * 99) + 1;
+let attempt = prompt('Занадано число от 1 до 100: ')
 
-if (year || y) {
-    result = dateUpdate('year', 'YYYY');
-}
+while (Number(attempt) !== number) {
+    if (attempt === null) process.exit();
+    if (/[^0-9]/.test(attempt)) {
+        attempt = prompt('Нужно ввести число! ');
+        continue;
+    }
 
-else if (month || m) {
-    result = dateUpdate('month', 'MM');
-}
-
-else if (date || d) {
-    result = dateUpdate('day', 'DD');
-}
-
-function dateUpdate(type, format) {
-    if (_.includes('add')) {
-        let add = _[_.indexOf('add') + 1];
-        return moment().add(add, type).format(format);
-    } else if (_.includes('sub')) {
-        let sub = _[_.indexOf('sub') + 1];
-        return moment().subtract(sub, type).format(format);
+    if (Number(attempt) < number) {
+        attempt = prompt(`Больше чем ${attempt}: `);
     } else {
-        return moment().format(format);
+        attempt = prompt(`Меньше чем ${attempt}: `);
     }
 }
-
-console.log(result)
+console.log('Вы угадали!');
